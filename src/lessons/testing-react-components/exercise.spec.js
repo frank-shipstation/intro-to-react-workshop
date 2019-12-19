@@ -14,19 +14,23 @@ describe('Exercise', () => {
 
   describe('component', () => {
     it('should mount without throwing an error by default', () => {
-      fail(new Error('Implement me!'));
+      const el = mount(<TestableComponent renderSomething />);
+      expect(el).toBeTruthy();
     });
 
     it(`should throw an error when passed a 'throwError' prop with value of true`, () => {
-      fail(new Error('Implement me!'));
+      const renderComponent = () => render(<TestableComponent throwError />);
+      expect(renderComponent).toThrow();
     });
 
     it('should render an instance of TestableComponent', () => {
-      fail(new Error('Implement me!'));
+      const el = mount(<TestableComponent renderSomething />);
+      expect(el.find(TestableComponent).length).toBe(1);
     });
 
     it(`should render 'Hello World!' when passed a 'renderSomething' prop with value of true`, () => {
-      fail(new Error('Implement me!'));
+      const el = mount(<TestableComponent renderSomething />);
+      expect(el.text()).toEqual('Hello World!');
     });
   });
 });

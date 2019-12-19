@@ -13,9 +13,9 @@ import './exercise.css';
  * option continues to change even if nothing is controlling its value.
  **/
 
-const RadioButton = ({ checked, children, value }) => (
+const RadioButton = ({ checked, children, value, onClick }) => (
   <div className={`radio-button${checked ? ' checked' : ''}`}>
-    <Button variant={checked ? 'primary' : 'secondary'}>
+    <Button variant={checked ? 'primary' : 'secondary'} onClick={() => onClick(value)}>
       <span className="icon" /> {children}
     </Button>
   </div>
@@ -23,14 +23,14 @@ const RadioButton = ({ checked, children, value }) => (
 
 const RadioGroup = class extends React.Component {
   render() {
-    const { children } = this.props;
-    let currentValue = undefined;
+    const { children, currentValue } = this.props;
 
     return (
       <div className="radio-group">
         {React.Children.map(children, child => React.cloneElement(child, {
           ...child.props,
           checked: child.props.value === currentValue,
+          onClick: this.props.onChange,
         }))}
       </div>
     );
@@ -48,7 +48,7 @@ const AgeRangeRadioGroup = class extends React.Component {
 
   render() {
     return (
-      <RadioGroup onChange={this._onChange} value={this.state.value}>
+      <RadioGroup onChange={this._onChange} currentValue={this.state.value}>
         <RadioButton value="13-17">13 - 17 years old</RadioButton>
         <RadioButton value="18-24">18 - 24 years old</RadioButton>
         <RadioButton value="25-39">25 - 39 years old</RadioButton>

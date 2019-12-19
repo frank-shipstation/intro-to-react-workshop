@@ -28,6 +28,7 @@ const Tile = ({
   picture,
   registered,
   removeTile,
+  guid,
 }) => (
   <div className="memo-tile m-2">
     <Row className="justify-content-between flex-nowrap p-4">
@@ -35,7 +36,7 @@ const Tile = ({
         <img src={picture} alt={name.first + ' ' + name.last} />
       </div>
       <div className="p-2">
-        <div className="remove text-center" onClick={removeTile}>&times;</div>
+        <div className="remove text-center" onClick={() => removeTile(guid)}>&times;</div>
         <div>Name: <span>{name.first} {name.last}</span></div>
         <div>Age: <span>{age}</span></div>
         <div>Email Address: <span>{email}</span></div>
@@ -55,9 +56,9 @@ const TileList = class extends React.Component {
     formField: '',
   };
 
-  _onRemove = index => {
+  _onRemove = guid => {
     this.setState({
-      data: this.state.data.filter((record, idx) => idx !== index),
+      data: this.state.data.filter((record, idx) => record.guid !== guid),
     });
   };
 
@@ -74,7 +75,7 @@ const TileList = class extends React.Component {
           <input onChange={this._onChange} placeholder="Some random form field" type="text" value={formField} />
         </div>
         <Row className="flex-wrap justify-content-around align-items-start">
-          {data.map((record, index) => {
+          {data.map((record) => {
             const computedRecord = {...record};
 
             computedRecord.name = {
@@ -86,7 +87,7 @@ const TileList = class extends React.Component {
             delete computedRecord.lastName;
 
             return (
-              <Tile key={index} {...computedRecord} removeTile={() => this._onRemove(index)} />
+              <Tile key={record.guid} {...computedRecord} removeTile={this._onRemove} />
             );
           })}
         </Row>

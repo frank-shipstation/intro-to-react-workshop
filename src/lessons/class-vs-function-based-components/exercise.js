@@ -85,7 +85,26 @@ import React from 'react';
  **/
 
 const Exercise = () => (
-  <span />
+  <div>
+    <Foo />
+    <Barr />
+  </div>
 );
+
+const Foo = () => {
+  return (
+    <div>
+      Epstein
+    </div>
+  );
+};
+
+class Barr extends React.Component {
+  render() {
+    return (
+      <div>Barr</div>
+    );
+  }
+};
 
 export default Exercise;

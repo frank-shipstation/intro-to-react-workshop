@@ -108,7 +108,41 @@ import TabletView from './exercise.tablet';
  * when it should be rendering at any given time, based on whether or not its rule matches.
  **/
 
-const MediaQuery = () => null;
+const MediaQuery = class extends React.Component {
+
+  state = {
+    matchesMedia: false,
+    mql: null,
+  }
+
+  checkIfMatchesMedia = () => {
+    const { mql, matchesMedia } = this.state;
+     if (mql) {
+       if (mql.matches !== matchesMedia) {
+         this.setState({ matchesMedia: mql.matches });
+       }
+     } else if (matchesMedia) {
+       this.setState({ matchesMedia: false });
+     }
+  }
+
+  componentDidMount() {
+    const { query } = this.props;
+    const mql = window.matchMedia(query);
+    mql.addEventListener('change', this.checkIfMatchesMedia);
+    this.setState({
+      mql,
+    }, this.checkIfMatchesMedia);
+  }
+
+  render() {
+    const { matchesMedia } = this.state;
+    if (matchesMedia) {
+      return this.props.children;
+    }
+    return null;
+  }
+};
 
 const Exercise = () => (
   <React.Fragment>

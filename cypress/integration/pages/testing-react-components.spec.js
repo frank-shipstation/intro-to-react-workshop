@@ -4,11 +4,13 @@ context('Testing React Components', () => {
   })
 
   it('has at least 4 nav links at the top of the page', () => {
-    throw new Error('Implement me!');
+    cy.get('header .nav-item a')
+      .should('have.length.of.at.least', 4);
   });
 
   it('has at least code block example on the page', () => {
-    throw new Error('Implement me!');
+    cy.get('.code-block')
+    .should('have.length.of.at.least', 1);
   });
 
   it(`has a 'Show Tips' button`, () => {

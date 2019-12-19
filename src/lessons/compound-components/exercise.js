@@ -87,7 +87,6 @@ const Job = class extends React.Component {
     this._isMounted = true;
 
     await CountdownService.tick(this.state.timeRemaining, this._onTick);
-
     this._onComplete();
   }
 
@@ -126,21 +125,57 @@ const Job = class extends React.Component {
  * how many items have finished processing, so that you know which components
  * to mount and activate.
  **/
-const JobPipeline = class extends React.Component {
-  render() {
-    return this.props.children;
-  }
-};
+// const JobPipeline = class extends React.Component {
+//   render() {
+//     return this.props.children;
+//   }
+// };
 
 const Exercise = () => (
-  <JobPipeline>
-    <Job jobId='123' timeToComplete={5} />
-    <Job jobId='234' timeToComplete={4} />
-    <Job jobId='345' timeToComplete={3} />
-    <Job jobId='456' timeToComplete={4} />
-    <Job jobId='567' timeToComplete={7} />
-  </JobPipeline>
+  <JobPipeline2>
+    <Job jobId='123' timeToComplete={3} />
+    <Job jobId='234' timeToComplete={2} />
+    <Job jobId='345' timeToComplete={1} />
+    <Job jobId='456' timeToComplete={1} />
+    <Job jobId='567' timeToComplete={1} />
+  </JobPipeline2>
 );
+
+
+class JobPipeline2 extends React.Component {
+  state = {
+    jobsComplete: [],
+  };
+
+  _onJobComplete = (jobId) =>  {
+    this.setState({
+      jobsComplete: [...this.state.jobsComplete, jobId],
+    })
+  }
+
+  render() {
+    const childrenArray = React.Children.toArray(this.props.children);
+    const finishedJobs = childrenArray.filter(job => this.state.jobsComplete.includes(job.props.jobId));
+
+    if (finishedJobs.length === childrenArray.length) {
+      return (<div>DONE MOTHAFUCKA</div>)
+    }
+
+    const nextJob = childrenArray[finishedJobs.length];
+
+    return (
+      <div>
+        {[...finishedJobs, nextJob].map(job =>
+        React.cloneElement(job, {
+          ...job.props,
+          onComplete: this._onJobComplete,
+        })
+      )}
+      </div>
+    );
+  }
+
+}
 
 export default Exercise;
 

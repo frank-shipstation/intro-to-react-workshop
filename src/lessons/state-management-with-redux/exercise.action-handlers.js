@@ -1,4 +1,12 @@
-export const deleteItem = (state, action) => {};
+export const deleteItem = (state, { itemIndex }) => {
+  return {
+    ...state,
+    items: [
+      ...state.items.slice(0, itemIndex),
+      ...state.items.slice(itemIndex+1),
+    ]
+  }
+};
 
 /*********************************************************************
  *         Don't look below here unless you want the answer!         *
